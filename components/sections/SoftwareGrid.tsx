@@ -21,20 +21,22 @@ export default function SoftwareGrid() {
   const xTranslation = useTransform(scrollYProgress, [0, 1], ["0%", "-20%"]);
   const x = useSpring(xTranslation, { stiffness: 50, damping: 25 });
 
-  useEffect(() => {
-    if (!motionRef.current) return;
+ useEffect(() => {
+  if (!motionRef.current) return;
 
-    // Subtle continuous drift using GSAP
-    const drift = gsap.to(motionRef.current, {
-      x: "+=20",            // Drift right by 20px
-      duration: 15,          // Slow and long
-      ease: "power1.inOut",
-      repeat: -1,            // Infinite
-      yoyo: true,            // Reverse after each cycle
-    });
+  const tween = gsap.to(motionRef.current, {
+    x: 20,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+    duration: 6,
+  });
 
-    return () => drift.kill();
-  }, []);
+  return () => {
+    tween.kill();
+  };
+}, []);
+
 
   return (
     <section 
