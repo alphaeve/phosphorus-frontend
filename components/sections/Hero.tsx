@@ -31,7 +31,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-6">
+    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
       
       {/* 1. BACKGROUND VIDEO */}
       <div className="absolute inset-0 -z-20">
@@ -40,96 +40,91 @@ export default function Hero() {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover scale-105" // slight scale to prevent white edges
+          className="w-full h-full object-cover"
         >
-          <source 
-            src="/panelvideo2.mp4" 
-            type="video/mp4" 
-          />
+          <source src="/panelvideo2.mp4" type="video/mp4" />
         </video>
       </div>
 
-      {/* 2. GRADIENT OVERLAY (Engineering Blue) */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#0A192F]/90 via-[#0A192F]/60 to-[#0A192F]/90" />
+      {/* 2. OVERLAY - Deep Navy (Engineering Luxe) */}
+      <div className="absolute inset-0 -z-10 bg-[#0A192F]/80 backdrop-blur-[2px]" />
 
-      {/* CENTERED CONTENT */}
-      <div className="max-w-4xl text-center flex flex-col items-center">
-        
-        {/* Eyebrow / Tagline */}
-        <motion.span
-          initial={{ opacity: 0, letterSpacing: "0.1em" }}
-          animate={{ opacity: 1, letterSpacing: "0.4em" }}
+      {/* 3. CENTRALIZED UNIFORM CONTAINER (Max-W-6xl) */}
+      <div className="w-full max-w-6xl px-6 relative z-10">
+        <div className="max-w-4xl"> {/* Inner constraint for typography readability */}
+          
+          {/* Eyebrow / Tagline - Bronze Accent */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1 }}
+            className="flex items-center gap-3 mb-8"
+          >
+            <div className="w-12 h-[1px] bg-[#c79e81]" />
+            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#c79e81]">
+              Precision Solar Engineering
+            </span>
+          </motion.div>
 
-          transition={{ duration: 1 }}
-          className="mb-6 text-[11px] font-bold uppercase text-[#c79e81] drop-shadow-md"
-        >
-          Precision Solar Engineering
-        </motion.span>
+          {/* Headline - High Contrast White & Bronze */}
+          <h1
+            ref={titleRef}
+            className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-[0.9] tracking-tighter"
+          >
+            PROSPEROUS<br />
+            <span className="text-[#bbade0] italic font-light">SOLAR ASSETS</span>
+          </h1>
 
-        {/* Headline */}
-        <h1
-          ref={titleRef}
-          className="text-5xl md:text-7xl lg:text-[6rem] font-extrabold text-white leading-[1.0] tracking-tighter"
-        >
-          PROSPEROUS<br />
-          <span className="text-[#c79e81] inline-block mt-2">SOLAR ASSETS</span>
-        </h1>
+          {/* Description - Constrained for focus */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.2 }}
+            className="mt-10 text-lg md:text-xl text-blue-50/60 max-w-xl leading-relaxed font-normal"
+          >
+            Designing utility-scale infrastructure with 
+            <span className="text-white font-medium"> technical compliance </span> 
+             and optimized long-term ROI.
+          </motion.p>
 
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.2 }}
-          className="mt-8 text-lg md:text-xl text-blue-50/80 max-w-2xl leading-relaxed font-light"
-        >
-          Designing high-performance, utility-scale infrastructure with 
-          <span className="text-white font-medium"> technical compliance </span> 
-          and optimized ROI.
-        </motion.p>
+          {/* CTA Buttons - Themed and Centralized alignment */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1.5 }}
+            className="flex flex-col sm:flex-row gap-5 mt-12"
+          >
+            <button
+              onClick={() => {
+                const contactForm = document.getElementById("contact");
+                if (contactForm) {
+                  contactForm.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="group bg-[#c79e81] text-[#0A192F] px-10 py-5 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-4 transition-all duration-500 hover:bg-white"
+            >
+              Consult Engineers
+              <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
+            </button>
 
-        {/* CTA Buttons */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.5 }}
-          className="flex flex-col sm:flex-row gap-6 mt-12"
-        >
-         <button
-  onClick={() => {
-    const contactForm = document.getElementById("contact");
-    if (contactForm) {
-      contactForm.scrollIntoView({ behavior: "smooth" });
-    }
-  }}
-  className="group relative bg-transparent text-[#bbade0] border border-[#bbade0] px-10 py-5 text-[11px] font-bold uppercase tracking-[0.2em] flex items-center gap-4 transition-all duration-300 hover:bg-[#bbade0]/10 hover:text-[#E2957A]"
->
-  Consult With Engineers
-  <ArrowRight
-    size={18}
-    className="group-hover:translate-x-2 transition-transform duration-300"
-  />
-</button>
-
-          <button className="px-10 py-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white border border-white/30 backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-[#0A192F]">
-            Technical Portfolio
-          </button>
-        </motion.div>
+            <button className="px-10 py-5 text-[10px] font-bold uppercase tracking-[0.2em] text-white border border-white/20 backdrop-blur-md transition-all duration-500 hover:bg-white/10">
+              Technical Portfolio
+            </button>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Decorative Engineering Line (Bottom) */}
+      {/* Decorative Blueprint Line (Bottom) */}
       <motion.div 
         initial={{ width: 0 }}
         animate={{ width: "100px" }}
         transition={{ duration: 1.5, delay: 2 }}
-        className="absolute bottom-12 h-[1px] bg-[#bbade0]/50" 
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 h-[1px] bg-[#bbade0]/30" 
       />
     </section>
   );
 }
 
-
-
-// https://images.unsplash.com/photo-1558449028-b53a39d100fc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c29sYXIlMjBwYW5lbHxlbnwwfHwwfHx8MA%3D%3D
 
 
 

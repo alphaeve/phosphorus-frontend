@@ -8,6 +8,7 @@ import Blog from "@/components/sections/blog";
 import BlogSection from "@/components/sections/blog";
 import ClientMarquee from "@/components/sections/client";
 import Achievements from "@/components/sections/achivements";
+import Footer from "@/components/sections/footer";
 
 export default function Home() {
   
@@ -52,6 +53,9 @@ export default function Home() {
           <ContactForm />
         </div>
       </section>
+      <section id="footer">
+        <Footer/>
+       </section>
     </main>
   );
 }
