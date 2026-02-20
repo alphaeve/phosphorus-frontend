@@ -80,7 +80,11 @@ export default function Achievements() {
           {achievements.map((item, idx) => (
             <div
               key={idx}
-              ref={(el) => (cardsRef.current[idx] = el)}
+             ref={(el) => {
+  if (el) {
+    cardsRef.current[idx] = el;
+  }
+}}
               className="sticky top-[100px] w-full" // This makes them stack
             >
               <div className="group flex flex-col md:flex-row bg-white border border-slate-100 rounded-[2rem] overflow-hidden shadow-xl shadow-slate-200/50 min-h-[400px]">
