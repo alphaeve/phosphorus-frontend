@@ -43,10 +43,21 @@ export default function BlogSection() {
   const [selectedBlog, setSelectedBlog] = useState<typeof BLOG_POSTS[0] | null>(null);
 
   return (
-    <section id="blog" className="py-24 bg-white min-h-screen flex flex-col items-center">
-      {/* UNIFORM WIDTH CONTAINER (Centralized) */}
-      <div className="w-full max-w-6xl px-6">
-        
+    <section id="blog" className="relative py-24 bg-white min-h-screen flex flex-col items-center overflow-hidden">
+      
+      {/* ARCHITECTURAL GRID BACKGROUND (Matches Services Theme) */}
+      <div
+        className="absolute inset-0 opacity-[0.04] pointer-events-none z-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(#003d2b 1px, transparent 1px),
+            linear-gradient(90deg, #003d2b 1px, transparent 1px)
+          `,
+          backgroundSize: "45px 45px",
+        }}
+      />
+
+      <div className="w-full max-w-6xl px-6 relative z-10">
         <AnimatePresence mode="wait">
           {!selectedBlog ? (
             <motion.div
@@ -55,58 +66,58 @@ export default function BlogSection() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
             >
-              {/* SECTION HEADER - Centralized Consistency */}
+              {/* SECTION HEADER */}
               <div className="mb-16">
                 <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-[1px] bg-[#c79e81]" />
-                    <span className="text-[10px] font-black tracking-[0.4em] text-[#c79e81] uppercase">
+                    <div className="w-10 h-[2px] bg-[#8dc63f]" />
+                    <span className="text-[10px] font-black tracking-[0.4em] text-[#8dc63f] uppercase">
                         Technical Journal
                     </span>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-extrabold text-[#0A192F] tracking-tighter">
-                  Solar <span className="italic font-light text-[#bbade0]">Insights.</span>
+                <h2 className="text-4xl md:text-6xl font-black text-[#003d2b] tracking-tighter leading-[0.9]">
+                  SOLAR <span className="italic font-light text-[#8dc63f]">INSIGHTS.</span>
                 </h2>
               </div>
 
-              {/* GRID - Uniform width cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {/* BLOG LISTING GRID */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 {BLOG_POSTS.map((post) => (
                   <div
                     key={post.id}
                     onClick={() => setSelectedBlog(post)}
-                    className="group cursor-pointer flex flex-col h-full"
+                    className="group cursor-pointer flex flex-col h-full bg-white/50"
                   >
-                    {/* Image Container - Minimal Design */}
-                    <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-6 bg-slate-50">
+                    {/* Image Container - Removed Grayscale effect */}
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-2xl mb-6 shadow-sm border border-slate-100">
                       <img
                         src={post.image}
                         alt={post.title}
-                        className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-sm border border-slate-100">
-                        <span className="text-[8px] font-bold uppercase tracking-widest text-[#0A192F]">
+                      <div className="absolute top-4 left-4 bg-[#003d2b] text-white px-3 py-1 rounded-full">
+                        <span className="text-[8px] font-bold uppercase tracking-widest">
                           {post.category}
                         </span>
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="flex flex-col flex-grow px-1">
-                      <div className="flex items-center gap-4 mb-3 text-slate-400 text-[9px] font-bold uppercase tracking-widest">
-                        <span className="flex items-center gap-1"><Calendar size={12} className="text-[#c79e81]" /> {post.date}</span>
-                        <span className="flex items-center gap-1"><Clock size={12} className="text-[#c79e81]" /> {post.readTime}</span>
+                    <div className="flex flex-col flex-grow">
+                      <div className="flex items-center gap-4 mb-3 text-[#003d2b]/40 text-[9px] font-bold uppercase tracking-widest">
+                        <span className="flex items-center gap-1.5"><Calendar size={12} className="text-[#8dc63f]" /> {post.date}</span>
+                        <span className="flex items-center gap-1.5"><Clock size={12} className="text-[#8dc63f]" /> {post.readTime}</span>
                       </div>
                       
-                      <h3 className="text-xl font-bold text-[#0A192F] mb-3 group-hover:text-[#c79e81] transition-colors leading-tight">
+                      <h3 className="text-xl font-black text-[#003d2b] mb-4 group-hover:text-[#8dc63f] transition-colors leading-tight uppercase tracking-tight">
                         {post.title}
                       </h3>
                       
-                      <p className="text-slate-500 text-sm leading-relaxed mb-6 line-clamp-2 font-normal">
+                      <p className="text-slate-500 text-sm leading-relaxed mb-8 line-clamp-2 font-medium">
                         {post.excerpt}
                       </p>
 
-                      <div className="mt-auto flex items-center gap-2 text-[#0A192F] text-[10px] font-bold uppercase tracking-[0.2em] group-hover:gap-4 transition-all">
-                        Read Analysis <ArrowRight size={14} className="text-[#c79e81]" />
+                      <div className="mt-auto flex items-center gap-3 text-[#003d2b] text-[10px] font-black uppercase tracking-[0.25em] group-hover:gap-5 transition-all">
+                        Analyze Post <ArrowRight size={16} className="text-[#8dc63f]" />
                       </div>
                     </div>
                   </div>
@@ -114,64 +125,72 @@ export default function BlogSection() {
               </div>
             </motion.div>
           ) : (
-            /* --- BLOG DETAIL VIEW (Narrowed for readability) --- */
+            /* --- BLOG DETAIL VIEW --- */
             <motion.div
               key="detail"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="max-w-3xl mx-auto" // Closer width for article reading
+              className="max-w-3xl mx-auto"
             >
               <button
                 onClick={() => setSelectedBlog(null)}
-                className="flex items-center gap-2 text-slate-400 hover:text-[#0A192F] transition-colors mb-12 group"
+                className="flex items-center gap-2 text-[#003d2b]/60 hover:text-[#003d2b] transition-colors mb-12 group"
               >
-                <ArrowLeft size={16} />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Back to Archive</span>
+                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                <span className="text-[10px] font-black uppercase tracking-[0.25em]">Back to Archive</span>
               </button>
 
               <div className="mb-12">
-                <span className="text-[#c79e81] text-[10px] font-black uppercase tracking-[0.3em]">
+                <span className="text-[#8dc63f] text-[10px] font-black uppercase tracking-[0.4em]">
                   {selectedBlog.category}
                 </span>
-                <h1 className="text-4xl md:text-5xl font-extrabold text-[#0A192F] mt-4 mb-8 leading-[1.1] tracking-tighter">
+                <h1 className="text-4xl md:text-5xl font-black text-[#003d2b] mt-4 mb-8 leading-[1.1] tracking-tighter uppercase">
                   {selectedBlog.title}
                 </h1>
                 
-                <div className="flex items-center gap-6 py-6 border-y border-slate-100">
+                <div className="flex items-center gap-8 py-8 border-y border-slate-100">
                     <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Author</span>
-                        <span className="text-xs font-bold text-[#0A192F]">{selectedBlog.author}</span>
+                        <span className="text-[9px] text-slate-400 uppercase tracking-widest mb-1">Lead Analyst</span>
+                        <span className="text-sm font-black text-[#003d2b]">{selectedBlog.author}</span>
                     </div>
-                    <div className="w-[1px] h-8 bg-slate-100" />
+                    <div className="w-px h-10 bg-slate-100" />
                     <div className="flex flex-col">
-                        <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Date</span>
-                        <span className="text-xs font-bold text-[#0A192F]">{selectedBlog.date}</span>
+                        <span className="text-[9px] text-slate-400 uppercase tracking-widest mb-1">Publication</span>
+                        <span className="text-sm font-black text-[#003d2b]">{selectedBlog.date}</span>
                     </div>
                 </div>
               </div>
 
-              <div className="w-full aspect-video rounded-3xl overflow-hidden mb-12 bg-slate-50">
-                <img src={selectedBlog.image} className="w-full h-full object-cover grayscale-[0.5]" alt="hero" />
+              <div className="w-full aspect-video rounded-3xl overflow-hidden mb-12 shadow-2xl">
+                <img src={selectedBlog.image} className="w-full h-full object-cover" alt="Solar Tech" />
               </div>
 
               <article className="prose prose-slate max-w-none">
                 <div 
-                  className="text-slate-600 leading-[1.8] space-y-6 text-lg font-normal"
+                  className="text-[#003d2b]/80 leading-[1.8] space-y-8 text-lg font-medium"
                   dangerouslySetInnerHTML={{ __html: selectedBlog.content }} 
                 />
               </article>
 
-              {/* Minimal Newsletter CTA - Unified Design */}
-              <div className="mt-20 p-10 bg-slate-50 rounded-3xl border border-slate-100 text-center">
-                    <h3 className="text-xl font-bold text-[#0A192F] mb-2 tracking-tight">Technical Deep-Dives</h3>
-                    <p className="text-slate-500 mb-8 text-sm font-normal">Join engineers receiving monthly solar infrastructure insights.</p>
-                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                        <input type="email" placeholder="Email Address" className="px-6 py-3 rounded-full border border-slate-200 text-sm focus:outline-none focus:border-[#c79e81] w-full max-w-xs" />
-                        <button className="bg-[#0A192F] text-white px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-[#c79e81] transition-all">
+              {/* Technical Newsletter CTA */}
+              <div className="mt-20 p-12 bg-[#003d2b] rounded-[3rem] text-center shadow-2xl relative overflow-hidden">
+                    {/* Subtle Logo Branding in CTA */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-[#8dc63f]/10 rounded-full blur-3xl -mr-10 -mt-10" />
+                    
+                    <h3 className="text-2xl font-black text-white mb-3 tracking-tight uppercase">Technical Deep-Dives</h3>
+                    <p className="text-white/60 mb-10 text-sm font-medium">Join 500+ solar EPC engineers receiving monthly technical reports.</p>
+                    
+                    <form className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <input 
+                            type="email" 
+                            placeholder="Engineering Email" 
+                            className="px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white text-sm focus:outline-none focus:border-[#8dc63f] w-full max-w-sm backdrop-blur-md" 
+                        />
+                        <button className="bg-[#8dc63f] text-[#003d2b] px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.25em] hover:bg-white transition-all w-full sm:w-auto">
                             Subscribe
                         </button>
-                    </div>
+                    </form>
               </div>
             </motion.div>
           )}

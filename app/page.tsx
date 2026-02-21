@@ -9,6 +9,7 @@ import BlogSection from "@/components/sections/blog";
 import ClientMarquee from "@/components/sections/client";
 import Achievements from "@/components/sections/achivements";
 import Footer from "@/components/sections/footer";
+import WhyProsperousScrubber from "@/components/sections/why";
 
 export default function Home() {
   
@@ -19,6 +20,9 @@ export default function Home() {
       {/* <section id="software">
         <SoftwareGrid />
       </section> */}
+      <section id="why">
+        <WhyProsperousScrubber/>
+      </section>
 
       <section id="services">
         <Services />

@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image"; // Added for optimized logo loading
 import { usePathname } from "next/navigation";
-import { Menu, X, Zap, Building2, Users, Heart, Briefcase, ChevronDown } from "lucide-react";
+import { Menu, X, LayoutGrid, Users, Leaf, Briefcase, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -11,30 +12,23 @@ const navLinks = [
   { 
     name: "About Us", 
     href: "/about/company",
-    isMega: true,
     dropdown: [
-      { name: "About Company", sub: "ENGINEERING EXCELLENCE", href: "/about/company", icon: Building2 },
-      { name: "Our Team", sub: "EXPERT CONSULTANTS", href: "/about/team", icon: Users },
-      { name: "Our Culture", sub: "SUSTAINABILITY FIRST", href: "/about/culture", icon: Heart },
-      { name: "Careers", sub: "JOIN THE MISSION", href: "/about/careers", icon: Briefcase },
+      { name: "About Company", sub: "SOLAR EXPERTISE", href: "/about/company", icon: LayoutGrid },
+      { name: "Our Team", sub: "EXPERT ENGINEERS", href: "/about/team", icon: Users },
+      { name: "Our Vision", sub: "SUSTAINABLE FUTURE", href: "/about/culture", icon: Leaf },
+      { name: "Careers", sub: "JOIN OUR MISSION", href: "/about/careers", icon: Briefcase },
     ]
   },
   { name: "Services", href: "/#services" },
-  { name: "Blog", href: "/#blog" },
+  { name: "Portfolio", href: "/#portfolio" },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<string | null>(null); // For accordion
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [hoverDropdown, setHoverDropdown] = useState<string | null>(null);
   const pathname = usePathname();
-
-  // Close everything on route change
-  useEffect(() => {
-    setIsOpen(false);
-    setMobileMenuOpen(null);
-  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -42,31 +36,39 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on path change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
   return (
     <div className="fixed w-full top-4 md:top-6 z-[100] px-4 md:px-6 flex justify-center">
       <nav
         className={cn(
-          "w-full max-w-6xl transition-all duration-500 border",
-          // Dynamic Border Radius: Pill when closed, rounded corners when open on mobile
-          isOpen ? "rounded-[2rem]" : "rounded-full",
+          "w-full max-w-6xl transition-all duration-500 border relative",
+          isOpen ? "rounded-[2rem] bg-[#001a12]/95 backdrop-blur-3xl" : "rounded-full",
           scrolled 
-            ? "bg-slate-900/60 backdrop-blur-2xl border-white/20 py-3 shadow-2xl" 
-            : "bg-white/10 backdrop-blur-xl border-white/10 py-4 md:py-5"
+            ? "bg-[#001a12]/80 backdrop-blur-2xl border-white/10 py-2.5 shadow-2xl" 
+            : "bg-black/20 backdrop-blur-xl border-white/10 py-4"
         )}
       >
-        <div className="px-6 md:px-8 flex justify-between items-center">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group shrink-0">
-            <div className="bg-[#bbade0] p-1.5 rounded-lg shadow-lg">
-              <Zap size={18} className="text-white fill-current" />
+        <div className="px-6 md:px-10 flex justify-between items-center relative z-[110]">
+          
+          {/* --- LOGO AREA --- */}
+          <Link href="/" className="flex items-center group shrink-0">
+            <div className="relative h-10 w-40 md:h-12 md:w-48 transition-transform duration-500 group-hover:scale-[1.02]">
+              <Image
+                src="/logo.png"
+                alt="Prosperous Consultancy Logo"
+                fill
+                priority
+                className="object-contain"
+              />
             </div>
-            <span className="text-base md:text-lg font-bold tracking-tight text-white uppercase">
-              PROSPEROUS
-            </span>
           </Link>
 
-          {/* Desktop Links (Hidden on Mobile) */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
               <div 
                 key={link.name} 
@@ -77,80 +79,111 @@ export default function Navbar() {
                 <Link
                   href={link.href}
                   className={cn(
-                    "text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-1.5",
-                    hoverDropdown === link.name ? "text-[#bbade0]" : "text-white/80 hover:text-white"
+                    "text-[10px] font-black uppercase tracking-[0.25em] transition-all flex items-center gap-1.5",
+                    hoverDropdown === link.name || pathname === link.href 
+                      ? "text-[#8dc63f]" 
+                      : "text-white/80 hover:text-white"
                   )}
                 >
                   {link.name}
-                  {link.dropdown && <ChevronDown size={12} className={cn("transition-transform", hoverDropdown === link.name && "rotate-180")} />}
+                  {link.dropdown && (
+                    <ChevronDown 
+                      size={12} 
+                      className={cn("transition-transform duration-300", hoverDropdown === link.name && "rotate-180")} 
+                    />
+                  )}
                 </Link>
 
+                {/* MEGA DROPDOWN */}
                 <AnimatePresence>
                   {link.dropdown && hoverDropdown === link.name && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      initial={{ opacity: 0, y: 15, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[480px] bg-slate-900/90 backdrop-blur-[40px] border border-white/20 rounded-[2.5rem] shadow-2xl p-6"
+                      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[450px] bg-[#001a12]/95 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-2xl p-6 z-[120]"
                     >
-                      <div className="grid grid-cols-2 gap-4">
-                        {link.dropdown.map((item) => {
-                          const Icon = item.icon;
-                          return (
-                            <Link key={item.name} href={item.href} className="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/10 transition-all border border-transparent hover:border-white/10">
-                              <div className="p-2.5 bg-white/10 rounded-xl text-white/60 group-hover:text-[#bbade0] transition-colors"><Icon size={18} /></div>
-                              <div>
-                                <div className="text-[11px] font-bold uppercase text-white group-hover:text-[#bbade0]">{item.name}</div>
-                                <div className="text-[8px] text-white/40 tracking-widest uppercase">{item.sub}</div>
+                      <div className="grid grid-cols-2 gap-3">
+                        {link.dropdown.map((item) => (
+                          <Link 
+                            key={item.name} 
+                            href={item.href} 
+                            className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition-all"
+                          >
+                            <div className="p-2.5 bg-[#8dc63f]/10 rounded-xl text-[#8dc63f] group-hover:bg-[#8dc63f] group-hover:text-black transition-all duration-300">
+                              <item.icon size={18} />
+                            </div>
+                            <div>
+                              <div className="text-[10px] font-black uppercase text-white tracking-widest group-hover:text-[#8dc63f] transition-colors">
+                                {item.name}
                               </div>
-                            </Link>
-                          );
-                        })}
+                              <div className="text-[7px] text-[#8dc63f] tracking-[0.2em] font-bold uppercase mt-1 opacity-60">
+                                {item.sub}
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </div>
             ))}
-            <Link href="/#contact" className="bg-[#bbade0] text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:brightness-110 transition-all shadow-lg active:scale-95">
+            
+            {/* CTA BUTTON */}
+            <Link 
+              href="/#contact" 
+              className="bg-[#8dc63f] text-[#001a12] px-7 py-3 rounded-full text-[10px] font-black uppercase tracking-widest hover:bg-white transition-all shadow-lg shadow-[#8dc63f]/20 active:scale-95"
+            >
               Consult Now
             </Link>
           </div>
 
           {/* Mobile Toggle */}
-          <button className="md:hidden p-2 text-white" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          <button 
+            className="md:hidden p-2 text-[#8dc63f] hover:text-white transition-colors" 
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
 
         {/* Mobile Menu (Glass Style) */}
         <AnimatePresence>
           {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden px-6 pb-8 pt-4 overflow-hidden"
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }} 
+              animate={{ opacity: 1, height: "auto" }} 
+              exit={{ opacity: 0, height: 0 }} 
+              className="md:hidden px-6 pb-10 pt-4 overflow-hidden"
             >
               <div className="flex flex-col gap-2">
                 {navLinks.map((link) => (
-                  <div key={link.name} className="border-b border-white/5 last:border-0">
+                  <div key={link.name} className="border-b border-white/5 last:border-0 text-white font-black">
                     {link.dropdown ? (
                       <div>
                         <button 
-                          onClick={() => setMobileMenuOpen(mobileMenuOpen === link.name ? null : link.name)}
-                          className="flex items-center justify-between w-full py-4 text-sm font-bold text-white uppercase tracking-widest"
+                          onClick={() => setMobileMenuOpen(mobileMenuOpen === link.name ? null : link.name)} 
+                          className="flex items-center justify-between w-full py-4 text-[11px] uppercase tracking-widest text-white/90"
                         >
-                          {link.name}
-                          <ChevronDown size={16} className={cn("transition-transform", mobileMenuOpen === link.name && "rotate-180")} />
+                          {link.name} 
+                          <ChevronDown size={16} className={cn("text-[#8dc63f] transition-transform", mobileMenuOpen === link.name && "rotate-180")} />
                         </button>
                         <AnimatePresence>
                           {mobileMenuOpen === link.name && (
-                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden bg-white/5 rounded-2xl mb-4">
-                              <div className="grid grid-cols-1 gap-2 p-4">
+                            <motion.div 
+                              initial={{ height: 0, opacity: 0 }} 
+                              animate={{ height: "auto", opacity: 1 }} 
+                              className="bg-[#8dc63f]/5 rounded-2xl mb-4 overflow-hidden"
+                            >
+                              <div className="p-3 flex flex-col gap-1">
                                 {link.dropdown.map((sub) => (
-                                  <Link key={sub.name} href={sub.href} className="flex items-center gap-3 p-3 text-[11px] font-bold text-white/70 uppercase tracking-widest hover:text-[#bbade0]">
-                                    <sub.icon size={16} className="text-[#bbade0]" />
+                                  <Link 
+                                    key={sub.name} 
+                                    href={sub.href} 
+                                    className="flex items-center gap-4 p-4 text-[10px] font-bold text-white/70 uppercase tracking-widest hover:text-[#8dc63f]"
+                                  >
+                                    <sub.icon size={16} className="text-[#8dc63f]" /> 
                                     {sub.name}
                                   </Link>
                                 ))}
@@ -160,13 +193,19 @@ export default function Navbar() {
                         </AnimatePresence>
                       </div>
                     ) : (
-                      <Link href={link.href} className="block py-4 text-sm font-bold text-white uppercase tracking-widest">
+                      <Link 
+                        href={link.href} 
+                        className="block py-4 text-[11px] uppercase tracking-widest text-white/90 hover:text-[#8dc63f]"
+                      >
                         {link.name}
                       </Link>
                     )}
                   </div>
                 ))}
-                <Link href="/#contact" className="mt-4 w-full text-center bg-[#bbade0] text-white py-4 rounded-2xl text-[11px] font-bold uppercase tracking-[0.2em] shadow-lg">
+                <Link 
+                  href="/#contact" 
+                  className="mt-4 w-full text-center bg-[#8dc63f] text-[#001a12] py-4 rounded-full text-[11px] font-black uppercase tracking-[0.2em] shadow-lg"
+                >
                   Consult Now
                 </Link>
               </div>
@@ -177,184 +216,3 @@ export default function Navbar() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// "use client";
-// import React, { useState, useEffect } from "react";
-// import Link from "next/link";
-// import { Menu, X, Zap, Building2, Users, Heart, Briefcase, ChevronDown } from "lucide-react";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { cn } from "@/lib/utils";
-
-// const navLinks = [
-//   { name: "Home", href: "/" },
-//   { 
-//     name: "About Us", 
-//     href: "#about", 
-//     isMega: true,
-//     dropdown: [
-//       { name: "About Company", sub: "ENGINEERING EXCELLENCE", href: "/about/company", icon: Building2 },
-//       { name: "Our Team", sub: "EXPERT CONSULTANTS", href: "/about/team", icon: Users },
-//       { name: "Our Culture", sub: "SUSTAINABILITY FIRST", href: "/about/culture", icon: Heart },
-//       { name: "Careers", sub: "JOIN THE MISSION", href: "/about/careers", icon: Briefcase },
-//     ]
-//   },
-//   { name: "Services", href: "#services" },
-//   { name: "Blog", href: "#blog" },
-// ];
-
-// export default function Navbar() {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [scrolled, setScrolled] = useState(false);
-//   const [hoverDropdown, setHoverDropdown] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     const handleScroll = () => setScrolled(window.scrollY > 20);
-//     window.addEventListener("scroll", handleScroll);
-//     return () => window.removeEventListener("scroll", handleScroll);
-//   }, []);
-
-//   return (
-//     // Floating Container to prevent "Too Broad" look
-//     <div className="fixed w-full top-6 z-[100] px-6 flex justify-center">
-//       <nav
-//         className={cn(
-//           "w-full max-w-6xl transition-all duration-500 rounded-full px-8",
-//           "border border-white/10 backdrop-blur-md",
-//           scrolled 
-//             ? "bg-[#0A192F]/80 py-3 shadow-2xl shadow-black/20" 
-//             : "bg-white/5 py-4"
-//         )}
-//       >
-//         <div className="flex justify-between items-center">
-//           {/* Logo */}
-//           <Link href="/" className="flex items-center gap-2 group">
-//             <div className="bg-[#bbade0] p-1.5 rounded-lg shadow-lg shadow-orange-500/20">
-//               <Zap size={18} className="text-white fill-current" />
-//             </div>
-//             <span className="text-lg font-bold tracking-tight text-white">
-//               Prosperous
-//             </span>
-//           </Link>
-
-//           {/* Desktop Links */}
-//           <div className="hidden md:flex items-center gap-8">
-//             {navLinks.map((link) => (
-//               <div 
-//                 key={link.name} 
-//                 className="relative py-2"
-//                 onMouseEnter={() => setHoverDropdown(link.name)}
-//                 onMouseLeave={() => setHoverDropdown(null)}
-//               >
-//                 <a
-//                   href={link.href}
-//                   className={cn(
-//                     "text-[11px] font-bold uppercase tracking-[0.2em] transition-all flex items-center gap-1.5",
-//                     hoverDropdown === link.name ? "text-[#bbade0]" : "text-white/80 hover:text-white"
-//                   )}
-//                 >
-//                   {link.name}
-//                   {link.dropdown && <ChevronDown size={12} className={cn("transition-transform opacity-50", hoverDropdown === link.name && "rotate-180 opacity-100")} />}
-//                 </a>
-
-//                 {/* Mega Dropdown - Glass Style */}
-//                 <AnimatePresence>
-//                   {link.dropdown && hoverDropdown === link.name && (
-//                     <motion.div
-//                       initial={{ opacity: 0, y: 10, scale: 0.98 }}
-//                       animate={{ opacity: 1, y: 0, scale: 1 }}
-//                       exit={{ opacity: 0, y: 10, scale: 0.98 }}
-//                       className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[480px] bg-[#0A192F]/95 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden z-50 p-6"
-//                     >
-//                       <div className="grid grid-cols-2 gap-4">
-//                         {link.dropdown.map((item) => {
-//                           const Icon = item.icon;
-//                           return (
-//                             <Link
-//                               key={item.name}
-//                               href={item.href}
-//                               className="group flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all"
-//                             >
-//                               <div className="p-2.5 bg-white/5 rounded-xl text-white/40 group-hover:text-[#bbade0] group-hover:bg-[#bbade0]/10 transition-colors">
-//                                 <Icon size={18} strokeWidth={1.5} />
-//                               </div>
-//                               <div>
-//                                 <div className="text-[11px] font-bold uppercase tracking-wider text-white group-hover:text-[#bbade0] transition-colors">
-//                                   {item.name}
-//                                 </div>
-//                                 <div className="text-[8px] font-medium text-white/40 tracking-widest mt-0.5 uppercase">
-//                                   {item.sub}
-//                                 </div>
-//                               </div>
-//                             </Link>
-//                           );
-//                         })}
-//                       </div>
-//                     </motion.div>
-//                   )}
-//                 </AnimatePresence>
-//               </div>
-//             ))}
-
-//             <Link
-//               href="#contact"
-//               className="bg-[#bbade0] text-white px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-orange-600 transition-all shadow-lg shadow-orange-500/20 active:scale-95"
-//             >
-//               Consult Now
-//             </Link>
-//           </div>
-
-//           {/* Mobile Menu Button */}
-//           <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
-//             {isOpen ? <X size={24} /> : <Menu size={24} />}
-//           </button>
-//         </div>
-
-//         {/* Mobile Menu - Glass Style */}
-//         <AnimatePresence>
-//           {isOpen && (
-//             <motion.div
-//               initial={{ opacity: 0, height: 0 }}
-//               animate={{ opacity: 1, height: "auto" }}
-//               exit={{ opacity: 0, height: 0 }}
-//               className="md:hidden mt-4 bg-black/20 backdrop-blur-lg rounded-2xl overflow-hidden"
-//             >
-//               <div className="p-6 flex flex-col gap-5">
-//                 {navLinks.map((link) => (
-//                   <div key={link.name}>
-//                     <Link href={link.href} className="text-sm font-bold text-white uppercase tracking-widest">{link.name}</Link>
-//                     {link.dropdown && (
-//                       <div className="grid grid-cols-1 gap-3 mt-3 pl-4 border-l border-white/10">
-//                         {link.dropdown.map((sub) => (
-//                           <Link key={sub.name} href={sub.href} className="text-[10px] text-white/50 font-bold uppercase tracking-tighter">{sub.name}</Link>
-//                         ))}
-//                       </div>
-//                     )}
-//                   </div>
-//                 ))}
-//               </div>
-//             </motion.div>
-//           )}
-//         </AnimatePresence>
-//       </nav>
-//     </div>
-//   );
-// }

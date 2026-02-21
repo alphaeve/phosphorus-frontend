@@ -5,206 +5,106 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* -------------------- DUMMY LOGO DATA -------------------- */
-
-const row1 = [
-  { name: "Solarix", variant: "sun" },
-  { name: "GreenVolt", variant: "bolt" },
-  { name: "HelioTech", variant: "hex" },
-  { name: "EcoGrid", variant: "grid" },
-  { name: "SunPeak", variant: "triangle" },
-  { name: "PowerLeaf", variant: "leaf" },
+const softwareList = [
+  { name: "AUTOCAD", type: "autocad" },
+  { name: "PVSYST", type: "pvsyst" },
+  { name: "HelioScope", type: "helioscope" },
+  { name: "SketchUp", type: "sketchup" },
 ];
 
-const row2 = [
-  { name: "BrightRay", variant: "ray" },
-  { name: "Voltura", variant: "circle" },
-  { name: "RenewSys", variant: "ring" },
-  { name: "FluxEnergy", variant: "wave" },
-  { name: "GridOne", variant: "square" },
-  { name: "NovaSolar", variant: "star" },
-];
-
-/* -------------------- COMPONENT -------------------- */
-
-export default function ClientMarquee() {
-  const row1Ref = useRef<HTMLDivElement>(null);
-  const row2Ref = useRef<HTMLDivElement>(null);
+export default function SoftwareSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const setupMarquee = (el: HTMLDivElement, direction: number) => {
-      const totalWidth = el.scrollWidth / 2;
-
-      const anim = gsap.to(el, {
-        x: direction * totalWidth,
-        duration: 30,
-        ease: "none",
-        repeat: -1,
-      });
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top bottom",
-        onUpdate: (self) => {
-          gsap.to(anim, {
-            timeScale: 1 + Math.abs(self.getVelocity() / 600),
-            duration: 0.4,
-          });
-          gsap.to(anim, { timeScale: 1, duration: 1.5, delay: 0.3 });
-        },
-      });
-    };
-
-    if (row1Ref.current) setupMarquee(row1Ref.current, -1);
-    if (row2Ref.current) setupMarquee(row2Ref.current, 1);
-
-    return () => ScrollTrigger.getAll().forEach(t => t.kill());
-  }, []);
-
   return (
-    <section ref={sectionRef} className="py-24 bg-white overflow-hidden">
-      {/* Header */}
-      <div className="container mx-auto px-6 mb-16 text-center">
-        <span className="text-[11px] font-black tracking-[0.3em] uppercase text-[#bbade0]">
-          Trusted Partners
-        </span>
-        <h2 className="text-4xl md:text-5xl font-bold text-[#0A192F] mt-4">
-          Brands That Trust Us
-        </h2>
-      </div>
+    <section ref={sectionRef} className="relative py-24 bg-white overflow-hidden flex flex-col items-center">
+      
+      {/* 1. ARCHITECTURAL GRID - Consistent with Theme */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0" 
+        style={{
+          backgroundImage: `linear-gradient(#003d2b 1px, transparent 1px), linear-gradient(90deg, #003d2b 1px, transparent 1px)`,
+          backgroundSize: '50px 50px'
+        }}
+      />
 
-      <div className="flex flex-col gap-10">
-        {/* Row 1 */}
-        <div className="relative flex">
-          <div ref={row1Ref} className="flex gap-6 whitespace-nowrap">
-            {[...row1, ...row1].map((logo, i) => (
-              <LogoCard key={i} logo={logo} />
-            ))}
+      <div className="w-full max-w-6xl px-6 relative z-10">
+        
+        {/* HEADER - Matches Brochure Title Style */}
+        <div className="mb-16 text-center">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-8 h-[2px] bg-[#8dc63f]" /> 
+            <p className="text-[10px] font-black text-[#8dc63f] uppercase tracking-[0.4em]">
+              Tech Infrastructure
+            </p>
+            <div className="w-8 h-[2px] bg-[#8dc63f]" /> 
           </div>
+          <h2 className="text-3xl md:text-5xl font-black text-[#003d2b] tracking-tighter uppercase leading-none">
+            Software <span className="italic font-light text-[#8dc63f]">We Use.</span>
+          </h2>
         </div>
 
-        {/* Row 2 */}
-        <div className="relative flex">
-          <div
-            ref={row2Ref}
-            className="flex gap-6 whitespace-nowrap"
-            style={{ transform: "translateX(-50%)" }}
-          >
-            {[...row2, ...row2].map((logo, i) => (
-              <LogoCard key={i} logo={logo} />
-            ))}
-          </div>
+        {/* 2. SOFTWARE ROW - Single Centralized Row */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {softwareList.map((item, i) => (
+            <div 
+              key={i}
+              className="group relative flex items-center justify-center bg-white border border-[#003d2b]/10 rounded-2xl h-24 md:h-28 px-6 transition-all duration-500 hover:border-[#8dc63f] hover:shadow-[0_15px_30px_rgba(0,61,43,0.05)]"
+            >
+              <div className="flex items-center gap-4 group-hover:scale-105 transition-transform duration-500">
+                <SoftwareIcon type={item.type} />
+                <span className="text-xs md:text-sm font-black tracking-widest text-[#003d2b] uppercase">
+                  {item.name}
+                </span>
+              </div>
+              
+              {/* Corner Detail */}
+              <div className="absolute top-3 right-3 w-1.5 h-1.5 rounded-full bg-[#8dc63f] opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
+          ))}
+        </div>
+
+        {/* Technical Footer Label */}
+        <div className="mt-12 text-center">
+           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.3em] opacity-60">
+             Certified precision through industry-standard computation
+           </p>
         </div>
       </div>
     </section>
   );
 }
 
-/* -------------------- LOGO CARD -------------------- */
+/* -------------------- DYNAMIC SOFTWARE ICONS (Standard Logos) -------------------- */
 
-function LogoCard({ logo }: { logo: { name: string; variant: string } }) {
-  return (
-    <div className="logo-card w-[220px] h-[100px] flex items-center justify-center bg-white border border-slate-100 rounded-xl px-6 transition-all duration-500 hover:shadow-lg hover:border-[#bbade0]/30">
-      <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-all">
-        <LogoSVG variant={logo.variant} />
-        <span className="text-sm font-semibold tracking-wide text-slate-500">
-          {logo.name}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-/* -------------------- SVG VARIANTS -------------------- */
-
-function LogoSVG({ variant }: { variant: string }) {
-  const common = "stroke-slate-400 fill-none";
-
-  switch (variant) {
-    case "sun":
+function SoftwareIcon({ type }: { type: string }) {
+  switch (type) {
+    case "autocad":
       return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <circle cx="18" cy="18" r="6" strokeWidth="2" />
-          {[...Array(8)].map((_, i) => (
-            <line
-              key={i}
-              x1="18"
-              y1="2"
-              x2="18"
-              y2="8"
-              transform={`rotate(${i * 45} 18 18)`}
-              strokeWidth="2"
-            />
-          ))}
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L2 22h4.5l2.5-5.5h6l2.5 5.5H22L12 2zm-1.5 12L12 9.5l1.5 4.5h-3z" fill="#A71E22"/>
         </svg>
       );
-
-    case "bolt":
+    case "pvsyst":
       return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <polygon points="18,2 10,20 18,20 14,34 26,14 18,14" strokeWidth="2" />
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+           <rect x="4" y="8" width="16" height="12" rx="1" fill="#2D5A9E"/>
+           <circle cx="18" cy="6" r="4" fill="#FDB813"/>
+           <path d="M6 10h12v8H6v-8z" fill="#fff" opacity="0.3"/>
         </svg>
       );
-
-    case "hex":
+    case "helioscope":
       return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <polygon points="18,2 32,10 32,26 18,34 4,26 4,10" strokeWidth="2" />
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#F15A24" strokeWidth="3"/>
+          <path d="M12 6v6" stroke="#F15A24" strokeWidth="3" strokeLinecap="round"/>
         </svg>
       );
-
-    case "grid":
+    case "sketchup":
       return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          {[12, 18, 24].map((v) => (
-            <line key={v} x1={v} y1="8" x2={v} y2="28" strokeWidth="2" />
-          ))}
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2.5L4 7v10l8 4.5 8-4.5V7l-8-4.5zM12 5.5l5.5 3.2v6.6L12 18.5 6.5 15.3V8.7L12 5.5z" fill="#00539C"/>
+          <path d="M12 8.5l3.5 2v3l-3.5 2-3.5-2v-3l3.5-2z" fill="#00539C"/>
         </svg>
       );
-
-    case "triangle":
-      return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <polygon points="18,4 32,30 4,30" strokeWidth="2" />
-        </svg>
-      );
-
-    case "leaf":
-      return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <path d="M6 30C30 28 30 6 30 6S8 6 6 30Z" strokeWidth="2" />
-        </svg>
-      );
-
-    case "ring":
-      return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <circle cx="18" cy="18" r="12" strokeWidth="2" />
-        </svg>
-      );
-
-    case "wave":
-      return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <path d="M2 18c6-6 10 6 16 0s10 6 16 0" strokeWidth="2" />
-        </svg>
-      );
-
-    case "square":
-      return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <rect x="6" y="6" width="24" height="24" strokeWidth="2" />
-        </svg>
-      );
-
-    case "star":
-      return (
-        <svg width="36" height="36" viewBox="0 0 36 36" className={common}>
-          <polygon points="18,4 22,14 34,14 24,20 28,32 18,25 8,32 12,20 2,14 14,14" strokeWidth="2" />
-        </svg>
-      );
-
     default:
       return null;
   }
