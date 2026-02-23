@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { name: "Home", href: "/" },
+  { name: "Home", href: "#Hero" },
   { 
     name: "About Us", 
     href: "/about/company",
@@ -19,7 +19,7 @@ const navLinks = [
       { name: "Careers", sub: "JOIN OUR MISSION", href: "/about/careers", icon: Briefcase },
     ]
   },
-  { name: "Services", href: "/#services" },
+  { name: "Services", href: "#services" },
 ];
 
 export default function Navbar() {

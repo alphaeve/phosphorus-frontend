@@ -28,27 +28,27 @@ export default function ContactSection() {
       />
 
       {/* CENTRALIZED UNIFORM CONTAINER */}
-      <div className="w-full max-w-6xl px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+      <div className="w-full max-w-6xl px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           
-          {/* LEFT SIDE: CONTACT INFO (Data from Brochure) */}
-          <div className="max-w-xl">
+          {/* LEFT SIDE: CONTACT INFO */}
+          <div className="w-full max-w-xl">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-[2px] bg-[#8dc63f]" />
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#8dc63f]">Connect with Experts</span>
             </div>
 
-            <h2 className="text-4xl md:text-7xl font-black text-[#003d2b] tracking-tighter leading-[0.85] uppercase mb-8">
+            <h2 className="text-4xl sm:text-5xl md:text-7xl font-black text-[#003d2b] tracking-tighter leading-[0.9] md:leading-[0.85] uppercase mb-8">
               LET'S <span className="italic font-light text-[#8dc63f]">CONNECT.</span>
             </h2>
 
-            <p className="text-slate-500 text-base md:text-lg font-medium leading-relaxed mb-12">
+            <p className="text-slate-500 text-sm sm:text-base md:text-lg font-medium leading-relaxed mb-10 md:mb-12">
               Our engineering team is ready to optimize your solar assets. 
-              Contact us for high-precision design, documentation, and technical support.
+              Contact us for high-precision design and technical support.
             </p>
 
             {/* Info Cards */}
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
               {[
                 { 
                   icon: MapPin, 
@@ -66,15 +66,20 @@ export default function ContactSection() {
                   content: "prosperousconsultancy1@gmail.com", 
                 },
               ].map((item, i) => (
-                <div key={i} className="flex gap-6 group items-start">
-                  <div className="w-12 h-12 shrink-0 rounded-2xl bg-[#003d2b]/5 border border-[#003d2b]/10 flex items-center justify-center text-[#003d2b] group-hover:bg-[#8dc63f] group-hover:text-white group-hover:border-[#8dc63f] transition-all duration-500 shadow-sm">
-                    <item.icon size={20} strokeWidth={2} />
+                <div key={i} className="flex gap-4 sm:gap-6 group items-start">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl sm:rounded-2xl bg-[#003d2b]/5 border border-[#003d2b]/10 flex items-center justify-center text-[#003d2b] group-hover:bg-[#8dc63f] group-hover:text-white group-hover:border-[#8dc63f] transition-all duration-500 shadow-sm">
+                    <item.icon size={18} strokeWidth={2} className="sm:w-5 sm:h-5" />
                   </div>
-                  <div>
-                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-[#8dc63f] mb-1.5 block">
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[9px] font-black uppercase tracking-[0.25em] text-[#8dc63f] mb-1 block">
                       {item.label}
                     </span>
-                    <h4 className="text-sm md:text-base font-black text-[#003d2b] break-words uppercase tracking-tight">{item.content}</h4>
+                    <h4 className="text-sm sm:text-base font-black text-[#003d2b] uppercase tracking-tight break-words sm:break-normal overflow-wrap-anywhere">
+                      {/* Using break-all for the long email string on mobile */}
+                      <span className={i === 2 ? "break-all sm:break-normal" : ""}>
+                        {item.content}
+                      </span>
+                    </h4>
                   </div>
                 </div>
               ))}
@@ -82,11 +87,11 @@ export default function ContactSection() {
           </div>
 
           {/* RIGHT SIDE: THE FORM CARD */}
-          <div className="relative mt-8 lg:mt-0">
+          <div className="relative mt-4 lg:mt-0 w-full">
             {/* Subtle Lime Green glow behind card */}
-            <div className="absolute -inset-4 bg-[#8dc63f]/5 rounded-[3rem] blur-3xl -z-10" />
+            <div className="absolute -inset-4 bg-[#8dc63f]/5 rounded-[2.5rem] sm:rounded-[3rem] blur-3xl -z-10" />
             
-            <div className="bg-white rounded-[3rem] p-8 md:p-14 border border-[#003d2b]/5 shadow-[0_40px_100px_-20px_rgba(0,61,43,0.1)]">
+            <div className="bg-white rounded-[2rem] sm:rounded-[3rem] p-5 sm:p-10 md:p-14 border border-[#003d2b]/5 shadow-[0_40px_100px_-20px_rgba(0,61,43,0.1)]">
               <AnimatePresence mode="wait">
                 {!submitted ? (
                   <motion.div
@@ -95,27 +100,27 @@ export default function ContactSection() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                   >
-                    <div className="flex items-center gap-3 mb-10">
+                    <div className="flex items-center gap-3 mb-8 sm:mb-10">
                         <Zap size={18} className="text-[#8dc63f] fill-[#8dc63f]" />
-                        <h3 className="text-xl font-black text-[#003d2b] tracking-tight uppercase">Technical Inquiry</h3>
+                        <h3 className="text-lg sm:text-xl font-black text-[#003d2b] tracking-tight uppercase">Technical Inquiry</h3>
                     </div>
                     
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-2">
+                    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        <div className="space-y-1.5 sm:space-y-2">
                           <label className="text-[9px] font-black uppercase tracking-widest text-[#003d2b]/40 ml-1">Client Name</label>
-                          <input required type="text" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b]" />
+                          <input required type="text" className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b]" />
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5 sm:space-y-2">
                           <label className="text-[9px] font-black uppercase tracking-widest text-[#003d2b]/40 ml-1">Corporate Email</label>
-                          <input required type="email" className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b]" />
+                          <input required type="email" className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b]" />
                         </div>
                       </div>
 
-                      <div className="space-y-2">
+                      <div className="space-y-1.5 sm:space-y-2">
                         <label className="text-[9px] font-black uppercase tracking-widest text-[#003d2b]/40 ml-1">Required Expertise</label>
                         <div className="relative">
-                          <select className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b] appearance-none cursor-pointer">
+                          <select className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b] appearance-none cursor-pointer">
                             <option>Solar Layout & Design</option>
                             <option>PVsyst Simulation</option>
                             <option>Electrical SLD Engineering</option>
@@ -127,16 +132,16 @@ export default function ContactSection() {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
+                      <div className="space-y-1.5 sm:space-y-2">
                         <label className="text-[9px] font-black uppercase tracking-widest text-[#003d2b]/40 ml-1">Project Details</label>
-                        <textarea rows={4} className="w-full px-5 py-4 rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b] resize-none" />
+                        <textarea rows={3} className="w-full px-4 sm:px-5 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-slate-50 border border-transparent focus:bg-white focus:border-[#8dc63f]/40 outline-none transition-all text-sm font-bold text-[#003d2b] resize-none" />
                       </div>
 
                       <button 
                         disabled={loading}
-                        className="w-full bg-[#003d2b] hover:bg-[#8dc63f] active:scale-[0.97] text-white hover:text-[#003d2b] py-5 rounded-full font-black text-[11px] uppercase tracking-[0.3em] transition-all duration-500 flex items-center justify-center gap-4 disabled:opacity-50 mt-4 shadow-xl shadow-[#003d2b]/10"
+                        className="w-full bg-[#003d2b] hover:bg-[#8dc63f] active:scale-[0.97] text-white hover:text-[#003d2b] py-4 sm:py-5 rounded-full font-black text-[10px] sm:text-[11px] uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all duration-500 flex items-center justify-center gap-3 sm:gap-4 disabled:opacity-50 shadow-xl shadow-[#003d2b]/10"
                       >
-                        {loading ? "Processing..." : <>Initiate Technical Consultation <Send size={14} /></>}
+                        {loading ? "Processing..." : <>Initiate Consultation <Send size={14} /></>}
                       </button>
                     </form>
                   </motion.div>
@@ -144,16 +149,16 @@ export default function ContactSection() {
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="py-16 text-center"
+                    className="py-10 sm:py-16 text-center"
                   >
-                    <div className="w-20 h-20 bg-[#8dc63f]/10 text-[#8dc63f] rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
-                      <CheckCircle2 size={40} strokeWidth={2.5} />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#8dc63f]/10 text-[#8dc63f] rounded-full flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-inner">
+                      <CheckCircle2 size={32} strokeWidth={2.5} className="sm:w-10 sm:h-10" />
                     </div>
-                    <h3 className="text-2xl font-black text-[#003d2b] mb-4 uppercase tracking-tight">Transmission Successful</h3>
-                    <p className="text-slate-500 text-sm font-medium px-6 leading-relaxed">Our lead design engineer will contact you shortly to discuss your requirements.</p>
+                    <h3 className="text-xl sm:text-2xl font-black text-[#003d2b] mb-3 uppercase tracking-tight">Transmission Successful</h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-medium px-4 leading-relaxed">Our lead design engineer will contact you shortly.</p>
                     <button 
                       onClick={() => setSubmitted(false)}
-                      className="mt-10 text-[10px] font-black uppercase tracking-[0.3em] text-[#8dc63f] hover:text-[#003d2b] transition-colors border-b-2 border-[#8dc63f]/20 hover:border-[#003d2b]"
+                      className="mt-8 sm:mt-10 text-[10px] font-black uppercase tracking-[0.3em] text-[#8dc63f] hover:text-[#003d2b] transition-colors border-b-2 border-[#8dc63f]/20"
                     >
                       New Inquiry
                     </button>
@@ -165,9 +170,9 @@ export default function ContactSection() {
 
         </div>
 
-        {/* Bottom Decorative Circle (Matching Hero) */}
-        <div className="mt-32 flex flex-col items-center gap-4 opacity-20">
-             <div className="w-[2px] h-20 bg-gradient-to-b from-[#8dc63f] to-transparent" />
+        {/* Bottom Decorative Circle */}
+        <div className="mt-20 md:mt-32 flex flex-col items-center gap-4 opacity-20">
+             <div className="w-[2px] h-16 md:h-20 bg-gradient-to-b from-[#8dc63f] to-transparent" />
              <div className="w-2 h-2 rounded-full bg-[#8dc63f]" />
         </div>
       </div>
